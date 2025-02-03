@@ -1,24 +1,33 @@
 
-import { use } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Clock({country, timeshow}) {
-    // console.log(props) //le props passate dalle componenti si presentano come oggetti
     
     const t = Date.now() + 3600 * timeshow * 1000; //calcolo della data in base alla timezone
     
     const dateIni = new Date(t);
-    
-    //console.log(date, t, timeshow);
 
+    //inizializzare lo state
     const [date, setDate] = useState(dateIni);
 
+    useEffect(() => {
+    //codice da eseguire se gli input cambiano
+    const interval = setInterval(() => {
+        const time = date.getTime() + 1000;
+        setDate( new Date(time))
+    }, 1000);
+    
+      return () => {
+        //quando il componente è unmounted
+        clearInterval(interval)
+      }
+    }, [date])
 
-    setTimeout(() => {
-        const t = date.getTime() + 3600 * 1000
-        setDate(new Date(t))
-    }, 5000);
+
+    // setTimeout(() => {
+        // const t = date.getTime() + 3600 * 1000
+        // setDate(new Date(t))
+    // }, 5000);
     
     return (
         <h3> 
